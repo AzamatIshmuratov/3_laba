@@ -51,7 +51,7 @@ void write_dbase( ofstream &f, const Node* root );
 void write_node( ofstream &f, const Node& node );
 
 int main() { //-----------------------------Главная функция--------------------
-	setlocale(LC_ALL, "Russian");
+	setlocale(LC_ALL, "Rus");
 	Node* p, *parent;
 	Node* root = read_dbase( filename );
 	ofstream fout;
