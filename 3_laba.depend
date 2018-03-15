@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1521023151 source:c:\users\777\desktop\Структуры и алгоритмы обработки данных\3_laba\main.cpp
+	<fstream>
+	<cstdlib>
+	<cstring>
+	<ctime>
+	<iomanip>
+	<iostream>
+	<clocale>
+
