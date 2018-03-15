@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <iostream>
 #include <clocale>
+
 using namespace std;
 
 char* filename = "dbase";
@@ -89,6 +90,7 @@ int main() { //-----------------------------Главная функция--------------------
 			default: cout << " Надо вводить число от 1 до 4" << endl; break;
 		}
 	}
+	return 0;
 }
 
 Node* descent( Node* p ) {// -----------------------------Спуск по дереву
