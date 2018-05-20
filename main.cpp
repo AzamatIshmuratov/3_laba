@@ -8,15 +8,15 @@
 
 using namespace std;
 
-char* filename = "dbase";
+char* filename = "dbase.txt";
 enum Action { INSERT, DEL, INFO };
 enum Dir { LEFT, RIGHT };
 const int l_time = 20, l_FIO = 40, l_Punct_nazn = 12;
 struct Fine {//--------------Заявка (элемент списка)
-char time[l_time];//Время вылета
-char FIO[l_FIO];//Фамилия и инициалы пассажира
-float nomer;//Номер рейса
-Fine* next;//Указатель на следующий элемент
+    char time[l_time];//Время вылета
+    char FIO[l_FIO];//Фамилия и инициалы пассажира
+    float nomer;//Номер рейса
+    Fine* next;//Указатель на следующий элемент
 };
 
 struct Node {//-----------------Узел дерева
@@ -72,13 +72,24 @@ int main() { //-----------------------------Главная функция--------------------
 				         root = remove_node( root, p, parent, dir);
 				break;
   			}
-			case 3:// Справка
-				if ( !root ) { cout << "База пуста" << endl; break; }
-				if ( !(p = search_insert( root, input(INFO), INFO, dir, parent )))
- 					cout << "Сведения отсутствуют " << endl;
-				else
-					print_node( *p );
+			case 3:{// Вывод всех заявок
+				ifstream f( filename, ios::in);
+                string a,b,c,n;
+                float d; int i=1;
+                if(!(f>>a)){
+                     cout<<"Нет данных\n";
+                     goto label1;
+                }
+                while(1){
+                  f>>b>>c>>d>>n;
+                  cout<<"-----------Заявка №"<<i<<"--------------\n";
+                  cout<<"\n  Пункт назначения: "<<a<<endl<<"  Дата вылета: "<<b<<endl<<"  FIO: "<<c<<endl<<"  Номер рейса: "<<d<<"\n\n";
+                  if(!(f>>a)) break; i++;
+                }
+                label1:
+                f.close();
  				break;
+			}
 			case 4:	// Выход
 				fout.open( filename );
  				if ( !fout.is_open() ) {
@@ -129,9 +140,6 @@ Data input( Action action ) { // ---------------------------------Ввод заявки
    do { cout << "Введите желаемую дату вылета в формате ДД.ММ.ГГ:" << endl; cin >> buf;
        strncpy( temp1, buf, 2 ); strncpy( temp2, &buf[3], 2 ); day = atoi( temp1 ); month = atoi( temp2 );
    }while ( !( day > 0 && day < 32 && month > 0 && month < 13 ) ); strcpy( data.time, buf ); strcat( data.time, " " );
-   do { cout << "Введите желаемое время вылета в формате ЧЧ:ММ :" << endl; cin >> buf;
-       strncpy( temp1, buf, 2 ); strncpy( temp2, &buf[3], 2 ); hour = atoi( temp1 ); min = atoi( temp2 );
-   }while ( !( hour >= 0 && hour < 24 && min >= 0 && min < 60 ) ); strcat( data.time, buf );
    cin.get();
    if ( action == DEL ) return data;
        cout << "Введите фамилию и инициалы пассажира FIO" << endl; cin.getline( data.FIO, l_FIO );
@@ -144,9 +152,9 @@ Data input( Action action ) { // ---------------------------------Ввод заявки
 int menu() {// -------------------------------------------Вывод меню
    char buf[10];
    int option;
-   do { cout << "==================================" << endl; cout << "1 - Добавление заявки" << endl; cout << "2 - Вывод и удаление заявки" << endl; cout << "3 - Справка" << endl;
+   do { cout << "1 - Добавление заявки" << endl; cout << "2 - Вывод и удаление заявки" << endl; cout << "3 - Вывод всех заявок" << endl;
       cout << "4 - Выход" << endl;
-      cout << "==================================" << endl; cin >> buf; option = atoi( buf );
+      cin >> buf; option = atoi( buf );
    } while ( !option );
    cin.get();
    return option;
@@ -155,7 +163,7 @@ int menu() {// -------------------------------------------Вывод меню
 void print_node( const Node& node ) { // --------Вывод на экран сведений о заявке cout << "Номер : " << node.Punct_nazn << endl;
    Fine* pf = node.beg;
    while ( pf ) {
-      cout << "FIO: " << pf->FIO<< endl; cout << "Дата и время: " <<pf->time;
+      cout << "FIO: " << pf->FIO<< endl; cout << "Дата: " <<pf->time;
       cout << " Номер рейса: " << pf->nomer<< endl;
       pf = pf->next;
    }
